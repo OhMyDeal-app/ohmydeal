@@ -13,3 +13,13 @@
 
 /* Beta 0.7 */
 .photo-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}.photo-gallery img{width:100%;height:94px;object-fit:cover;border-radius:9px}.photo-loading{display:grid;place-items:center;min-height:70px;color:#8ca3b4;background:#152a38;border-radius:8px}.photo-upload input{display:none}
+
+/* Beta 0.7.1 */
+.commission-row{display:grid;grid-template-columns:minmax(0,1fr) 125px;gap:12px}
+.photo-form-block{margin:18px 0;padding:15px;border:1px solid #385267;border-radius:14px}
+.photo-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.photo-form-item{position:relative;aspect-ratio:1;overflow:hidden;border-radius:10px;background:#263e54}
+.photo-form-item img{width:100%;height:100%;object-fit:cover}
+.photo-form-item button{position:absolute;right:4px;top:4px;border:0;border-radius:50%;background:#14293f;color:white;width:26px;height:26px;font-size:21px;line-height:1}
+.photo-form-item small{position:absolute;bottom:4px;left:4px;background:#14293f;color:white;padding:3px 6px;border-radius:5px}
+.form-error{color:#ffb5b5}
