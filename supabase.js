@@ -1,7 +1,10 @@
 // Only public Supabase credentials. Never add secret/service-role keys here.
-const URL='https://uvjcqttowwubuxjkbbcv.supabase.co';
-const KEY='sb_publishable_DO0JIxEVY8zlV2IsE_xo7w_Wqfzv_fg';
-const STORE='omd-cloud-session';
+const URL=(import.meta.env.VITE_SUPABASE_URL||'').trim().replace(/\/+$/,'');
+const KEY=(import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||'').trim();
+const STORE='omd-beta08-test-cloud-session';
+if(!URL||!KEY||URL==='https://uvjcqttowwubuxjkbbcv.supabase.co') {
+  throw new Error('Beta 0.8 TEST: укажи отдельный тестовый Supabase URL и publishable key в Netlify. Рабочий Supabase запрещён.');
+}
 export const cloudEnabled=true;
 async function request(path,{method='GET',token,body,prefer}={}){
  const res=await fetch(URL+path,{method,headers:{'apikey':KEY,'Content-Type':'application/json',...(prefer?{'Prefer':prefer}:{}),...(token?{'Authorization':'Bearer '+token}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});
