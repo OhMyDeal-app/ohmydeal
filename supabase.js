@@ -13,6 +13,15 @@ export const cloud={
  async restore(){const saved=JSON.parse(localStorage.getItem(STORE)||'null');if(!saved)return null;if(saved.expires_at>Date.now()/1000+60)return saved;try{const next=await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:saved.refresh_token}});const s={...next,expires_at:Math.floor(Date.now()/1000)+next.expires_in};localStorage.setItem(STORE,JSON.stringify(s));return s}catch{localStorage.removeItem(STORE);return null}},
  async authenticate(mode,email,password){const signup=mode==='signup';const data=await request(signup?'/auth/v1/signup':'/auth/v1/token?grant_type=password',{method:'POST',body:{email,password}});if(data.access_token){const s={...data,expires_at:Math.floor(Date.now()/1000)+data.expires_in};localStorage.setItem(STORE,JSON.stringify(s));return s}return null},
  async logout(){const s=JSON.parse(localStorage.getItem(STORE)||'null');if(s?.access_token){try{await request('/auth/v1/logout',{method:'POST',token:s.access_token})}catch{}}localStorage.removeItem(STORE)},
+ async uploadPhoto(token,objectId,file){
+  const user=await request('/auth/v1/user',{token});
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,6)||'jpg';
+  const path=user.id+'/'+encodeURIComponent(objectId)+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
+  const response=await fetch(URL+'/storage/v1/object/omd-property-photos/'+path,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':file.type||'image/jpeg','x-upsert':'false'},body:file});
+  if(!response.ok){let data={};try{data=await response.json()}catch{}throw Error(data.message||data.error||'HTTP '+response.status)}
+  return URL+'/storage/v1/object/authenticated/omd-property-photos/'+path;
+ },
+ async photoUrl(token,url){const path=url.split('/omd-property-photos/')[1];if(!path)return url;const r=await request('/storage/v1/object/sign/omd-property-photos/'+path,{method:'POST',token,body:{expiresIn:3600}});return URL+'/storage/v1'+r.signedURL},
  async read(token){const user=await request('/auth/v1/user',{token});const rows=await request('/rest/v1/omd_user_data?select=payload&user_id=eq.'+encodeURIComponent(user.id),{token});return rows[0]?.payload||null},
  async write(token,payload){const user=await request('/auth/v1/user',{token});return request('/rest/v1/omd_user_data?on_conflict=user_id',{method:'POST',token,body:{user_id:user.id,payload},prefer:'resolution=merge-duplicates,return=minimal'})}
 };

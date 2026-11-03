@@ -10,3 +10,6 @@
 .stats button b{display:block;font-size:26px}
 .stats button small{display:block;font-size:11px;color:#c0d2da;margin-top:3px}
 .client-history{display:grid;gap:8px}.history-entry{background:#24394d;border-radius:12px;padding:12px}.history-entry small{color:#9de4ca;font-size:11px}.history-entry p{margin:7px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.45}.history-form{margin:12px 0 22px;gap:9px}
+
+/* Beta 0.7 */
+.photo-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}.photo-gallery img{width:100%;height:94px;object-fit:cover;border-radius:9px}.photo-loading{display:grid;place-items:center;min-height:70px;color:#8ca3b4;background:#152a38;border-radius:8px}.photo-upload input{display:none}
